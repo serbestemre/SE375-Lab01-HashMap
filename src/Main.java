@@ -3,18 +3,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
     static HashMap<Integer, ArrayList<String>> hashMapObj = new HashMap<>();
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
         System.out.println("Please state your choice... UPPER case or lower case (U or L):");
         String caseType = scanner.nextLine();  // Read user input
@@ -22,11 +21,11 @@ public class Main {
         System.out.println("Please state your choice...\n" +
                 "Color of characters (R or Y):");
         String color = scanner.nextLine();  // Read user input
-        System.out.println("color is: " + color);  // Output user input
 
         System.out.println("Please state your choice...\n" +
                 "How many characters to shift (number between 1-3): ");
         int shiftNumber = scanner.nextInt();  // Read user input
+
 
         try {
             BufferedReader reader = new BufferedReader(
@@ -103,13 +102,37 @@ public class Main {
 
     public static void changeCaseType (HashMap<Integer, ArrayList<String>> map, String caseType){
 
-        map.forEach((index,arrayList) -> {
+
+        Iterator iterator = map.entrySet().iterator();
+
+        while (iterator.hasNext()) {
             if(caseType.equals("l")  || caseType.equals("L") ){
-                arrayList.add(arrayList.get(0).toLowerCase());
+                Map.Entry element = (Map.Entry) iterator.next();
+
+                ArrayList<String> arrayList = (ArrayList<String>) element.getValue();
+                String lowerCase = arrayList.get(0).toLowerCase();
+                arrayList.add(lowerCase);
+
+                element.setValue(arrayList);
+
             }else if( caseType.equals("U") || caseType.equals("u")){
-                arrayList.add(arrayList.get(0).toUpperCase());
+                Map.Entry element = (Map.Entry) iterator.next();
+
+                ArrayList<String> arrayList = (ArrayList<String>) element.getValue();
+                String upperCase = arrayList.get(0).toUpperCase();
+                arrayList.add(upperCase);
+                element.setValue(arrayList);
             }
-        });
+        }
+
+//        map.forEach((index,arrayList) -> {
+//            if(caseType.equals("l")  || caseType.equals("L") ){
+//                arrayList.add(arrayList.get(0).toLowerCase());
+//            }else if( caseType.equals("U") || caseType.equals("u")){
+//                arrayList.add(arrayList.get(0).toUpperCase());
+//            }
+//        });
+
         System.out.println(map.values());
     }
 
